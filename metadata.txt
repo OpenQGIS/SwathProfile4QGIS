@@ -1,0 +1,57 @@
+[general]
+name=SwathProfile4QGIS
+qgisMinimumVersion=3.16
+qgisMaximumVersion=4.99
+description=横截面剖面提取工具 / Swath profile extraction tool
+version=2.0.2
+author=SwathProfile4QGIS
+email=OpenQGIS@outlook.com
+about=从栅格数据沿基线提取横截面剖面，支持交互式图表面板、一键曲线平滑、动态自定义纵坐标、参数覆盖与数据导出。 / Extract swath profiles from raster along baselines with interactive chart, curve smoothing, custom Y-axis, parameter override and export.
+homepage=
+tracker=
+category=Raster
+tags=swath,profile,raster,elevation,slope,geomorphology,THi,hypsometric,topography,剖面,地形,高程,平滑
+icon=icons/icon.png
+experimental=False
+deprecated=False
+changelog=
+    Version 2.0.1
+    - Fixed a warning about duplicated SwathProfileToolbar during plugin reload / 修复插件重载时提示工具栏重复的警告问题
+    Version 2.0.0
+    - Completely redesigned the GIS export dialog with options for GPKG, SHP, GeoJSON, and GDB formats / 全新重构GIS导出面板，支持GeoPackage、Shapefile、GeoJSON和FileGDB格式
+    - Support exporting all feature baselines and offset lines simultaneously with original attributes preserved / 支持一键导出所有基线及偏移线，并完美保留所有原始属性字段
+    - Added new S-type and S-level attribute fields for easier styling of characteristic profiles / 新增S-type和S-level特征属性字段，方便图层样式符号化与过滤
+    - Introduced adjustable curve smoothing in the export dialog to dynamically downsample 3D nodes and optimize performance / 导出面板引入曲线平滑选项，支持动态抽稀3D节点以大幅优化文件体积与渲染性能
+    - Optimized default sampling step size to 3.0 for faster initial processing / 优化默认采样步长至3.0，提升初始计算速度
+    - Fixed a critical QGIS crash caused by invalid geometries (NaN/Infinity) in the 3D Profile renderer / 修复由于坐标无效值(NaN/Infinity)导致的底层3D剖面渲染引擎闪退崩溃问题
+    Version 1.5.0
+    - Fixed interactive profile pick tool coordinate range and axis auto-scaling issues / 修复地图拾取线功能切换要素时剖面图表坐标范围无法自动缩放重置的问题
+    - Improved interactive profile pick tool to load all features of the baseline layer so they remain switchable / 优化地图拾取线功能，支持计算并保留图层内所有其他要素并支持下拉切换
+    - Updated parameter panel computation progress label to show overall cumulative totals across all baselines / 优化参数面板计算进度提示，支持显示所有线要素的累积总计算剖面条数
+    Version 1.4.0
+    - Combined 2D and 3D CAD exports into a single tool button with dropdown selection, supporting both DXF and DWG formats / 合并2D和3D CAD导出按钮，支持通过下拉菜单一键导出DXF及DWG格式
+    - Added AutoCAD version selection dialog during CAD exports to ensure compatibility / 导出CAD时支持选择不同AutoCAD兼容版本
+    - Added native non-blocking QGIS MessageBar export success prompts with "Show in Folder" button / 导出成功后在地图上方显示QGIS原生提示条，支持一键打开并定位文件夹
+    - Fixed swath range export to auto-load generated temporary layers or shapefiles into the QGIS layers panel / 修复导出条幅范围功能，支持自动加载临时内存图层或Shapefile文件到QGIS中
+    - Corrected map scan line draw order to render on top of the swath range polygons / 优化扫描线渲染顺序，确保始终处于条幅范围上方
+    - Updated interactive baseline drawing tool style to a solid red line on the map canvas / 将地图交互画线样式修改为更加瞩目的红色实线
+    Version 1.3.0
+    - Added one-click curve smoothing with adjustable intensity levels (Low/Medium/High/Ultra) / 工具栏支持一键启用平滑并可下拉选择平滑强度
+    - Added dynamic Y-axis labeling based on raster layer name or instant manual override dialog / 支持纵坐标随图层名动态自适应或通过工具栏一键手动自定义
+    - Added CAD exporting supporting 2D profile charts and 3D geographic lines / 支持一键将2D剖面图表及3D空间线导出为AutoCAD兼容的DXF文件
+    - Fixed matplotlib Chinese character rendering and minus sign display on Windows / 修复Windows系统下中文坐标轴文字显示乱码及负号显示问题
+    Version 1.2.0
+    - Fixed data-defined override field selection / 修复数据定义覆盖字段选择问题
+    - Fixed per-feature strip width matching / 修复每要素条幅宽度匹配
+    - Fixed scan line length sync with swath band / 修复扫描线长度与条幅同步
+    - Fixed QgsProperty.isValid() error / 修复QgsProperty.isValid()错误
+    Version 1.1.0
+    - Added data-defined override for parameters / 添加参数数据定义覆盖功能
+    - Added coordinate annotations on crosshair / 添加十字线坐标标注
+    - Added swath band export to vector file / 添加条幅范围导出为矢量文件
+    - Fixed pick line from map feature / 修复地图拾取线功能
+    Version 1.0.0
+    - Initial release with offset-line sampling / 首次发布，支持偏移线采样
+    - Interactive chart with zoom/pan/selection / 交互式图表支持缩放/平移/框选
+    - Swath band display on map / 地图上显示条幅范围
+    - Export to PNG/PDF/SVG/CSV / 导出PNG/PDF/SVG/CSV
