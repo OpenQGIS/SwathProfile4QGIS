@@ -1,4 +1,4 @@
-# SwathProfile4QGIS v2.0.3
+# SwathProfile4QGIS v2.1.0
 
 从栅格数据（高程、坡度、起伏等要素）沿基线提取横截面剖面的 QGIS 插件。
 

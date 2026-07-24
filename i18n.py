@@ -34,6 +34,16 @@ if not _LOCALE:
 _CHINESE = bool(_LOCALE and _LOCALE[:2].lower() == "zh")
 
 
-def tr(zh, en):
-    """Return *zh* when the QGIS locale is Chinese, otherwise *en*."""
+def tr(zh, en, disambiguation=None):
+    """Translate text using QCoreApplication.translate with SwathProfile4QGIS context.
+    Falls back to inline Chinese/English check if no translation is loaded.
+    """
+    try:
+        from qgis.PyQt.QtCore import QCoreApplication
+        translated = QCoreApplication.translate("SwathProfile4QGIS", en, disambiguation)
+        if translated and translated != en:
+            return translated
+    except Exception:
+        return zh if _CHINESE else en
+
     return zh if _CHINESE else en

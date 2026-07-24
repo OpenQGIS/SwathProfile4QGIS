@@ -33,6 +33,41 @@ class Swath4QGIS:
         self._prev_tool = None
         self.toolbar = None
 
+        # Load translation matching QGIS locale
+        import re
+        from qgis.PyQt.QtCore import QTranslator, QLocale, QCoreApplication
+        from qgis.core import QgsSettings
+
+        # Fetch locale and sanitize to prevent path traversal
+        locale_name = QgsSettings().value("locale/userLocale", QLocale.system().name())
+        if locale_name is not None:
+            locale_name = str(locale_name)
+        else:
+            locale_name = "en"
+        if not re.match(r"^[a-zA-Z0-9_\-]+$", locale_name):
+            locale_name = "en"
+
+        # Normalize QGIS locale format (e.g. zh-Hans -> zh_CN, zh-Hant -> zh_TW)
+        _locale_map = {
+            "zh-hans": "zh_CN",
+            "zh-hant": "zh_TW",
+            "zh-cn":   "zh_CN",
+            "zh-tw":   "zh_TW",
+        }
+        locale_candidates = []
+        _key = locale_name.lower()
+        if _key in _locale_map:
+            locale_candidates.append(_locale_map[_key])
+        locale_candidates.append(locale_name.replace("-", "_"))
+        locale_candidates.append(locale_name.split("_")[0].split("-")[0])
+
+        self.translator = QTranslator()
+        i18n_dir = os.path.join(os.path.dirname(__file__), "i18n")
+        for candidate in locale_candidates:
+            if self.translator.load(f"SwathProfile4QGIS_{candidate}", i18n_dir):
+                QCoreApplication.installTranslator(self.translator)
+                break
+
     # ------------------------------------------------------------------
     # Plugin lifecycle
     # ------------------------------------------------------------------
@@ -59,6 +94,11 @@ class Swath4QGIS:
 
     def unload(self):
         from .i18n import tr
+        from qgis.PyQt.QtCore import QCoreApplication
+        if hasattr(self, 'translator') and self.translator is not None:
+            QCoreApplication.removeTranslator(self.translator)
+            self.translator = None
+
         # Clear swath bands before closing
         if self.param_dock is not None:
             self.param_dock._clear_swath_bands()
