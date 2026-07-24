@@ -1,4 +1,4 @@
-# SwathProfile4QGIS v1.5.0
+# SwathProfile4QGIS v2.0.3
 
 从栅格数据（高程、坡度、起伏等要素）沿基线提取横截面剖面的 QGIS 插件。
 
@@ -63,6 +63,13 @@ A QGIS plugin for extracting swath profiles from raster layers (elevation, slope
 - QGIS 3.16+
 - Python 依赖库：matplotlib, numpy
 
+## 参考与致谢 Acknowledgements
+
+本项目在开发过程中，参考并借鉴了以下项目的核心算法与设计思路：
+- [swathprofiler_arcgis](https://github.com/geolovic/swathprofiler_arcgis) — 用于 ArcGIS 的 Swath 剖面提取工具。
+
 ## 许可证 License
 
-MIT License
+GNU General Public License v3.0 (GPLv3)
+
+

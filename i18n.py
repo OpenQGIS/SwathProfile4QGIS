@@ -16,15 +16,15 @@ _LOCALE = ""
 # Method 1: QgsSettings
 try:
     _LOCALE = QgsSettings().value("locale/userLocale", "")
-except:
-    pass
+except Exception:
+    _LOCALE = ""
 
 # Method 2: System locale (fallback)
 if not _LOCALE:
     try:
         _LOCALE = locale.getdefaultlocale()[0] or ""
-    except:
-        pass
+    except Exception:
+        _LOCALE = ""
 
 # Method 3: Environment variable (fallback)
 if not _LOCALE:

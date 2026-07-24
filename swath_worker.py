@@ -74,7 +74,7 @@ class SwathWorker(QObject):
         ptype = prop.propertyType()
 
         # 1. Field-based property
-        if ptype == QgsProperty.FieldBasedProperty:
+        if ptype == QgsProperty.Type.FieldBasedProperty:
             field_name = prop.field()
             if feature and field_name:
                 fields = feature.fields()
@@ -88,7 +88,7 @@ class SwathWorker(QObject):
                             pass
 
         # 2. Static property
-        elif ptype == QgsProperty.StaticProperty:
+        elif ptype == QgsProperty.Type.StaticProperty:
             val = prop.staticValue()
             if val is not None and val != "":
                 try:
@@ -97,7 +97,7 @@ class SwathWorker(QObject):
                     pass
 
         # 3. Expression-based property
-        elif ptype == QgsProperty.ExpressionBasedProperty:
+        elif ptype == QgsProperty.Type.ExpressionBasedProperty:
             expr_str = prop.expressionString()
             if expr_str and feature:
                 expr = QgsExpression(expr_str)

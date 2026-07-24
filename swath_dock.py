@@ -154,7 +154,7 @@ class SwathDock(QDockWidget):
         self._settings = None  # Will be initialized in _build_ui
 
         self.setAllowedAreas(
-            Qt.BottomDockWidgetArea | Qt.TopDockWidgetArea
+            Qt.DockWidgetArea.BottomDockWidgetArea | Qt.DockWidgetArea.TopDockWidgetArea
         )
         self.setMinimumHeight(200)
         self._build_ui()
@@ -188,8 +188,8 @@ class SwathDock(QDockWidget):
         self.btn_smooth.setText(tr("平滑", "Smooth"))
         self.btn_smooth.setToolTip(tr("曲线平滑 (Savitzky-Golay)\n点击开启/关闭，点击下拉箭头选择强度", "Curve smoothing (Savitzky-Golay)\nClick to toggle, or click dropdown arrow to select intensity"))
         self.btn_smooth.setCheckable(True)
-        self.btn_smooth.setPopupMode(QToolButton.MenuButtonPopup)
-        self.btn_smooth.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.btn_smooth.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
+        self.btn_smooth.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.btn_smooth.toggled.connect(self._toggle_smooth)
         
         # Build dropdown menu for smoothing intensity
@@ -273,8 +273,8 @@ class SwathDock(QDockWidget):
         self.btn_export_cad.setIcon(_icon("export_cad.svg"))
         self.btn_export_cad.setText(tr("导出 CAD", "Export CAD"))
         self.btn_export_cad.setToolTip(tr("导出为 AutoCAD DXF/DWG 文件 (2D/3D)", "Export as AutoCAD DXF/DWG file (2D/3D)"))
-        self.btn_export_cad.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.btn_export_cad.setPopupMode(QToolButton.InstantPopup) # 点击直接弹出菜单
+        self.btn_export_cad.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
+        self.btn_export_cad.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup) # 点击直接弹出菜单
 
         cad_menu = QMenu(self)
         act_cad2d = cad_menu.addAction(tr("导出 2D CAD 剖面图", "Export 2D CAD Profile Chart"))
@@ -290,14 +290,14 @@ class SwathDock(QDockWidget):
         self.btn_export_gis.setIcon(_icon("export-GISdata.svg"))
         self.btn_export_gis.setText(tr("导出 GIS 数据", "Export GIS Data"))
         self.btn_export_gis.setToolTip(tr("导出为 GIS 矢量数据 (SHP/GPKG/KML等)", "Export as GIS vector data (SHP/GPKG/KML etc.)"))
-        self.btn_export_gis.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.btn_export_gis.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.btn_export_gis.clicked.connect(self._open_gis_export_dialog)
         
         toolbar.addWidget(self.btn_export_gis)
 
         # Right side: profile selector
         spacer = QWidget()
-        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         toolbar.addWidget(spacer)
 
         self.points_label = QLabel("")
@@ -324,7 +324,7 @@ class SwathDock(QDockWidget):
         )
         self.canvas = InteractiveCanvas(self.figure, plugin=self.plugin)
         self.canvas.setMinimumHeight(100)
-        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.canvas.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         vbox.addWidget(self.canvas, 1)
 
         # ==== Bottom: display checkboxes with color swatches ====
@@ -386,8 +386,8 @@ class SwathDock(QDockWidget):
         btn.setIcon(_icon(icon_name))
         btn.setText(text)
         btn.setToolTip(text)
-        btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        btn.setPopupMode(QToolButton.InstantPopup) # 点击图标直接打开菜单
+        btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
+        btn.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup) # 点击图标直接打开菜单
 
         menu = QMenu(self)
         act_view = menu.addAction(tr("当前视图", "Current View"))
@@ -583,7 +583,7 @@ class SwathDock(QDockWidget):
         dlg = SwathSettingsDialog(self)
         if self._settings:
             dlg.set_settings(self._settings)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             self._settings = dlg.get_settings()
             self.btn_smooth.setChecked(self._settings.get("smooth_enabled", False))
             self._update_smooth_menu_checks()
@@ -631,7 +631,7 @@ class SwathDock(QDockWidget):
         prompt = tr("请输入纵坐标（Y轴）名称：\n(留空则默认使用当前主视图的栅格图层名称)", 
                     "Enter Y-axis label:\n(Leave empty to use active raster layer name by default)")
         
-        text, ok = QInputDialog.getText(self, title, prompt, QLineEdit.Normal, current_label)
+        text, ok = QInputDialog.getText(self, title, prompt, QLineEdit.EchoMode.Normal, current_label)
         if ok:
             settings["custom_y_label"] = text.strip()
             self._redraw()
@@ -747,7 +747,7 @@ class SwathDock(QDockWidget):
             msg_text += "<br/>" + warning_text
             
         label = QLabel(msg_text)
-        label.setTextFormat(Qt.RichText)
+        label.setTextFormat(Qt.TextFormat.RichText)
         label.setWordWrap(True)
         layout.addWidget(label)
         layout.addStretch(1)
@@ -758,15 +758,26 @@ class SwathDock(QDockWidget):
             
             # Cross-platform select file in explorer
             def open_folder():
+                import sys
+                import shutil
+                import subprocess
                 try:
                     abs_path = os.path.abspath(path)
+                    if not os.path.exists(abs_path):
+                        return
                     if sys.platform.startswith('win'):
-                        subprocess.run(['explorer', '/select,', os.path.normpath(abs_path)], shell=True)
+                        explorer = os.path.join(os.environ.get('SystemRoot', 'C:\\Windows'), 'explorer.exe')
+                        if os.path.exists(explorer):
+                            subprocess.run([explorer, '/select,', os.path.normpath(abs_path)], check=False)  # nosec B603
+                        else:
+                            subprocess.run(['explorer', '/select,', os.path.normpath(abs_path)], check=False)  # nosec B607 B603
                     elif sys.platform == 'darwin':
-                        subprocess.run(['open', '-R', abs_path])
+                        open_cmd = shutil.which('open') or '/usr/bin/open'
+                        subprocess.run([open_cmd, '-R', abs_path], check=False)  # nosec B603
                     else:
+                        xdg_open = shutil.which('xdg-open') or '/usr/bin/xdg-open'
                         dir_path = os.path.dirname(abs_path)
-                        subprocess.run(['xdg-open', dir_path])
+                        subprocess.run([xdg_open, dir_path], check=False)  # nosec B603
                 except Exception as e:
                     print(f"Error opening folder: {e}")
 
@@ -1154,7 +1165,7 @@ class SwathDock(QDockWidget):
                 crs = dem_layer.crs()
                 
         dlg = SwathGisExportDialog(self, crs)
-        if dlg.exec_():
+        if dlg.exec():
             params = dlg.get_export_params()
             self._export_gis_core(params)
 
@@ -1316,7 +1327,7 @@ class SwathDock(QDockWidget):
         error_code = result[0]
         error_msg = result[1] if len(result) > 1 else ""
 
-        if error_code == QgsVectorFileWriter.NoError:
+        if error_code == QgsVectorFileWriter.WriterError.NoError:
             self._show_native_success_message(path, "GIS 矢量数据")
             
             # Load into map if checked

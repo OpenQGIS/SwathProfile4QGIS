@@ -102,7 +102,7 @@ class SwathSettingsDialog(QDialog):
         """Build line color and width settings tab."""
         widget = QWidget()
         form = QFormLayout(widget)
-        form.setLabelAlignment(Qt.AlignRight)
+        form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
         form.setSpacing(8)
 
         items = [
@@ -156,7 +156,7 @@ class SwathSettingsDialog(QDialog):
         # Fill settings
         fill_box = QGroupBox(tr("填充", "Fill"))
         fill_form = QFormLayout(fill_box)
-        fill_form.setLabelAlignment(Qt.AlignRight)
+        fill_form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
 
         self._band_fill_btn = _color_btn(
             self._settings["band_fill_color"],
@@ -177,7 +177,7 @@ class SwathSettingsDialog(QDialog):
         # Stroke settings
         stroke_box = QGroupBox(tr("描边", "Stroke"))
         stroke_form = QFormLayout(stroke_box)
-        stroke_form.setLabelAlignment(Qt.AlignRight)
+        stroke_form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
 
         self._band_stroke_btn = _color_btn(
             self._settings["band_stroke_color"],
@@ -211,7 +211,7 @@ class SwathSettingsDialog(QDialog):
         """Build scan line settings tab."""
         widget = QWidget()
         form = QFormLayout(widget)
-        form.setLabelAlignment(Qt.AlignRight)
+        form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
         form.setSpacing(8)
 
         # Color

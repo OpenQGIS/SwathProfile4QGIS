@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Dock widget for swath profile algorithm parameters.
-"""
+import logging
+
+logger = logging.getLogger("SwathProfile4QGIS")
 
 from qgis.core import (
     QgsProject, QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsMapLayerProxyModel,
@@ -44,22 +43,22 @@ class SwathParamDock(QDockWidget):
         self._prop_defs = {
             PROP_STRIP_WIDTH: QgsPropertyDefinition(
                 "strip_width", tr("条带宽度", "Strip width"),
-                QgsPropertyDefinition.Double,
+                QgsPropertyDefinition.StandardPropertyTemplate.Double,
             ),
             PROP_N_PROFILES: QgsPropertyDefinition(
                 "n_profiles", tr("剖面数", "Number of profiles"),
-                QgsPropertyDefinition.Integer,
+                QgsPropertyDefinition.StandardPropertyTemplate.Integer,
             ),
             PROP_STEP_SIZE: QgsPropertyDefinition(
                 "step_size", tr("步长", "Step size"),
-                QgsPropertyDefinition.Double,
+                QgsPropertyDefinition.StandardPropertyTemplate.Double,
             ),
         }
         self._prop_collection = QgsPropertyCollection("swath_params")
 
         self.setAllowedAreas(
-            Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea
-            | Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea
+            Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
+            | Qt.DockWidgetArea.TopDockWidgetArea | Qt.DockWidgetArea.BottomDockWidgetArea
         )
         self._build_ui()
 
@@ -82,9 +81,9 @@ class SwathParamDock(QDockWidget):
         # Scroll area for parameters
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QScrollArea.NoFrame)
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scroll.setFrameShape(QScrollArea.Shape.NoFrame)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         main_layout.addWidget(scroll, 1)
 
         content = QWidget()
@@ -101,10 +100,10 @@ class SwathParamDock(QDockWidget):
 
         # --- DEM selector ---
         form = QFormLayout()
-        form.setLabelAlignment(Qt.AlignRight)
+        form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
 
         self.dem_combo = QgsMapLayerComboBox()
-        self.dem_combo.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dem_combo.setFilters(QgsMapLayerProxyModel.Filter.RasterLayer)
         self.dem_combo.setMinimumWidth(120)
         self.dem_combo.setToolTip(tr(
             "用于提取剖面高程的栅格数据。\n"
@@ -116,7 +115,7 @@ class SwathParamDock(QDockWidget):
 
         # --- Baseline selector ---
         self.line_combo = QgsMapLayerComboBox()
-        self.line_combo.setFilters(QgsMapLayerProxyModel.LineLayer)
+        self.line_combo.setFilters(QgsMapLayerProxyModel.Filter.LineLayer)
         self.line_combo.setMinimumWidth(120)
         self.line_combo.setToolTip(tr(
             "包含基线要素的线图层。\n"
@@ -144,7 +143,7 @@ class SwathParamDock(QDockWidget):
 
         # --- Parameters form with override buttons ---
         param_form = QFormLayout()
-        param_form.setLabelAlignment(Qt.AlignRight)
+        param_form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
 
         # Strip width
         self.width_spin = QDoubleSpinBox()
@@ -257,7 +256,7 @@ class SwathParamDock(QDockWidget):
         export_row.addWidget(self.export_browse)
         layout.addLayout(export_row)
 
-        layout.setAlignment(Qt.AlignTop)
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # --- Progress bar (fixed at bottom) ---
         self.progress_bar = QProgressBar()
@@ -305,7 +304,7 @@ class SwathParamDock(QDockWidget):
         main_layout.addLayout(btn_row)
 
         # Allow widget to be resized smaller than content hint
-        content.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Preferred)
+        content.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
 
         # Connect layer change to update override buttons
         self.line_combo.layerChanged.connect(self._on_layer_changed)
@@ -710,7 +709,7 @@ class SwathParamDock(QDockWidget):
             if band and not band.isEmpty():
                 try:
                     rb = QgsRubberBand(canvas, Qgis.GeometryType.Polygon)
-                except:
+                except Exception:
                     rb = QgsRubberBand(canvas)
                 rb.setToGeometry(band, None)
                 rb.setFillColor(fill_color)
@@ -718,8 +717,8 @@ class SwathParamDock(QDockWidget):
                 rb.setWidth(int(stroke_width * 10))
                 try:
                     rb.setZValue(100)
-                except:
-                    pass
+                except Exception:
+                    logger.debug("Failed to set rubber band Z-value")
                 self._swath_bands = [rb]
 
             canvas.refresh()
@@ -786,7 +785,7 @@ class SwathParamDock(QDockWidget):
                 QgsVectorFileWriter.driverForFileName(output_path)
             )
 
-            if error[0] == QgsVectorFileWriter.NoError:
+            if error[0] == QgsVectorFileWriter.WriterError.NoError:
                 # Also load the saved layer into QGIS
                 import os
                 base_name = os.path.splitext(os.path.basename(output_path))[0]
@@ -839,7 +838,7 @@ class SwathParamDock(QDockWidget):
             )
             
         label = QLabel(msg_text)
-        label.setTextFormat(Qt.RichText)
+        label.setTextFormat(Qt.TextFormat.RichText)
         label.setWordWrap(True)
         layout.addWidget(label)
 
@@ -849,15 +848,26 @@ class SwathParamDock(QDockWidget):
             
             # Cross-platform select file in explorer
             def open_folder():
+                import sys
+                import shutil
+                import subprocess
                 try:
                     abs_path = os.path.abspath(path)
+                    if not os.path.exists(abs_path):
+                        return
                     if sys.platform.startswith('win'):
-                        subprocess.run(['explorer', '/select,', os.path.normpath(abs_path)], shell=True)
+                        explorer = os.path.join(os.environ.get('SystemRoot', 'C:\\Windows'), 'explorer.exe')
+                        if os.path.exists(explorer):
+                            subprocess.run([explorer, '/select,', os.path.normpath(abs_path)], check=False)  # nosec B603
+                        else:
+                            subprocess.run(['explorer', '/select,', os.path.normpath(abs_path)], check=False)  # nosec B607 B603
                     elif sys.platform == 'darwin':
-                        subprocess.run(['open', '-R', abs_path])
+                        open_cmd = shutil.which('open') or '/usr/bin/open'
+                        subprocess.run([open_cmd, '-R', abs_path], check=False)  # nosec B603
                     else:
+                        xdg_open = shutil.which('xdg-open') or '/usr/bin/xdg-open'
                         dir_path = os.path.dirname(abs_path)
-                        subprocess.run(['xdg-open', dir_path])
+                        subprocess.run([xdg_open, dir_path], check=False)  # nosec B603
                 except Exception as e:
                     print(f"Error opening folder: {e}")
 

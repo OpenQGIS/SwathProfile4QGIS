@@ -4,7 +4,10 @@ Interactive matplotlib canvas for swath profile visualization.
 """
 
 import numpy as np
+import logging
 from qgis.PyQt.QtCore import Qt, QTimer
+
+logger = logging.getLogger("SwathProfile4QGIS")
 from qgis.PyQt.QtGui import QColor
 from qgis.core import QgsPointXY, QgsGeometry
 
@@ -201,8 +204,8 @@ class InteractiveCanvas(FigureCanvas):
             if ann is not None:
                 try:
                     ann.remove()
-                except:
-                    pass
+                except Exception:
+                    logger.debug("Failed to remove annotation %s", ann_attr)
                 setattr(self, ann_attr, None)
 
         # Get plot area bounds
@@ -259,8 +262,8 @@ class InteractiveCanvas(FigureCanvas):
             if line is not None:
                 try:
                     line.remove()
-                except:
-                    pass
+                except Exception:
+                    logger.debug("Failed to remove crosshair line")
         self._crosshair_v = None
         self._crosshair_h = None
 
@@ -269,8 +272,8 @@ class InteractiveCanvas(FigureCanvas):
             if ann is not None:
                 try:
                     ann.remove()
-                except:
-                    pass
+                except Exception:
+                    logger.debug("Failed to remove crosshair annotation")
         self._ann_x = None
         self._ann_y = None
         self._crosshair_ax = None
@@ -318,8 +321,8 @@ class InteractiveCanvas(FigureCanvas):
         if hasattr(self, '_rubber_band_patch') and self._rubber_band_patch is not None:
             try:
                 self._rubber_band_patch.remove()
-            except:
-                pass
+            except Exception:
+                logger.debug("Failed to remove rubber band patch")
             self._rubber_band_patch = None
 
     # ------------------------------------------------------------------
@@ -421,20 +424,20 @@ class InteractiveCanvas(FigureCanvas):
             try:
                 from qgis.core import Qgis
                 line_type = Qgis.GeometryType.Line
-            except:
+            except (ImportError, AttributeError):
                 line_type = None
 
             try:
                 self._scan_rubber_band = QgsRubberBand(canvas, line_type) if line_type else QgsRubberBand(canvas)
-            except:
+            except Exception:
                 self._scan_rubber_band = QgsRubberBand(canvas)
 
         self._scan_rubber_band.setColor(QColor(color_hex))
         self._scan_rubber_band.setWidth(main_width)
         try:
             self._scan_rubber_band.setZValue(10000)
-        except:
-            pass
+        except Exception:
+            logger.debug("Failed to set scan rubber band ZValue")
         self._scan_rubber_band.reset()
         self._scan_rubber_band.addPoint(p1, False)
         self._scan_rubber_band.addPoint(p2, True)
@@ -445,8 +448,8 @@ class InteractiveCanvas(FigureCanvas):
             try:
                 self._scan_rubber_band.reset()
                 self._scan_rubber_band.hide()
-            except:
-                pass
+            except Exception:
+                logger.debug("Failed to hide scan rubber band")
 
     def reset_view(self):
         for ax in self.figure.get_axes():

@@ -12,6 +12,9 @@ Design principles
 """
 
 import numpy as np
+import logging
+
+logger = logging.getLogger("SwathProfile4QGIS")
 
 # Colour palette - restrained, warm-neutral
 CLR_PROFILE = "#C8C8C8"   # light grey - individual offset lines
@@ -41,8 +44,8 @@ def apply_restrained_style(fig):
         # Support Chinese font display (Windows common fonts) and correct minus sign display
         mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'SimSun', 'DejaVu Sans', 'sans-serif']
         mpl.rcParams['axes.unicode_minus'] = False
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Failed to set matplotlib defaults: %s", e)
 
 
 

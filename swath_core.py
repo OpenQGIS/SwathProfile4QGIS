@@ -449,11 +449,11 @@ def compute_zonal_profile(baseline_geom, raster_layer, swath_width,
     mem_layer.updateExtents()
 
     stat_flags = (
-        QgsZonalStatistics.Min
-        | QgsZonalStatistics.Max
-        | QgsZonalStatistics.Mean
-        | QgsZonalStatistics.Median
-        | QgsZonalStatistics.StDev
+        QgsZonalStatistics.Statistic.Min
+        | QgsZonalStatistics.Statistic.Max
+        | QgsZonalStatistics.Statistic.Mean
+        | QgsZonalStatistics.Statistic.Median
+        | QgsZonalStatistics.Statistic.StDev
     )
     zs = QgsZonalStatistics(mem_layer, raster_layer, "_", 1, stat_flags)
     zs.calculateStatistics(None)

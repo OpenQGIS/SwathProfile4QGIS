@@ -21,28 +21,28 @@ class SwathDrawTool(QgsMapToolEmitPoint):
         self._canvas = canvas
         self._callback = callback
         self._points = []
-        self._rubber = QgsRubberBand(canvas, QgsWkbTypes.LineGeometry)
+        self._rubber = QgsRubberBand(canvas, QgsWkbTypes.GeometryType.LineGeometry)
         self._rubber.setColor(QColor(255, 0, 0, 200))  # Red
         self._rubber.setWidth(2)
-        self._rubber.setLineStyle(Qt.SolidLine)
+        self._rubber.setLineStyle(Qt.PenStyle.SolidLine)
 
     # ------------------------------------------------------------------
 
     def canvasReleaseEvent(self, event):
         pt = self.toMapCoordinates(event.pos())
 
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self._points.append(QgsPointXY(pt))
             self._rubber.addPoint(QgsPointXY(pt))
             if len(self._points) > 1:
                 self._rubber.movePoint(QgsPointXY(pt))
-        elif event.button() == Qt.RightButton:
+        elif event.button() == Qt.MouseButton.RightButton:
             self._finish()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Escape:
+        if event.key() == Qt.Key.Key_Escape:
             self._cancel()
-        elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
+        elif event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             self._finish()
 
     # ------------------------------------------------------------------
