@@ -1,4 +1,15 @@
-# SwathProfile4QGIS v2.1.0
+# SwathProfile4QGIS
+
+<p align="left">
+  <img src="https://img.shields.io/badge/status-feature--complete-brightgreen?style=flat&logo=checkmarx&logoColor=white" alt="Status">
+  <a href="https://plugins.qgis.org/plugins/SwathProfile4QGIS/"><img src="https://img.shields.io/qgis/plugin/v/SwathProfile4QGIS?style=flat&label=qgis%20plugin&logo=qgis&logoColor=white&color=589632" alt="QGIS Plugin"></a>
+  <a href="https://plugins.qgis.org/plugins/SwathProfile4QGIS/"><img src="https://img.shields.io/qgis/plugin/dt/SwathProfile4QGIS?style=flat&label=downloads&color=blue" alt="Downloads"></a>
+  <a href="https://github.com/OpenQGIS/SwathProfile4QGIS/releases"><img src="https://img.shields.io/github/v/release/OpenQGIS/SwathProfile4QGIS?style=flat&color=007ec6&label=release" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/OpenQGIS/SwathProfile4QGIS?style=flat&color=blue" alt="License"></a>
+</p>
+
+> 💡 **项目状态说明 (Project Status)**：  
+> 地形剖面带统计（最大、最小、均值曲线抽取与科学绘图）业务逻辑已**完全成熟并进入稳定支持阶段（Feature-Complete）**。插件满足科研论文与工程实践的高精度要求，后续重心专注于底层图形库与新版 QGIS 长期兼容维护。
 
 从栅格数据（高程、坡度、起伏等要素）沿基线提取横截面剖面的 QGIS 插件。
 
