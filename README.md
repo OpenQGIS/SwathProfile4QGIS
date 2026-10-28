@@ -2,10 +2,6 @@
 
 <p align="left">
   <img src="https://img.shields.io/badge/status-feature--complete-brightgreen?style=flat&logo=checkmarx&logoColor=white" alt="Status">
-  <a href="https://plugins.qgis.org/plugins/SwathProfile4QGIS/"><img src="https://img.shields.io/qgis/plugin/v/SwathProfile4QGIS?style=flat&label=qgis%20plugin&logo=qgis&logoColor=white&color=589632" alt="QGIS Plugin"></a>
-  <a href="https://plugins.qgis.org/plugins/SwathProfile4QGIS/"><img src="https://img.shields.io/qgis/plugin/dt/SwathProfile4QGIS?style=flat&label=downloads&color=blue" alt="Downloads"></a>
-  <a href="https://github.com/OpenQGIS/SwathProfile4QGIS/releases"><img src="https://img.shields.io/github/v/release/OpenQGIS/SwathProfile4QGIS?style=flat&color=007ec6&label=release" alt="Release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/OpenQGIS/SwathProfile4QGIS?style=flat&color=blue" alt="License"></a>
 </p>
 
 > 💡 **项目状态说明 (Project Status)**：  
