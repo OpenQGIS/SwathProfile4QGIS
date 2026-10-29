@@ -7,12 +7,12 @@ Manages toolbar actions, menu entries, and two dock widgets.
 import os
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtCore import Qt
+# from qgis.PyQt.QtCore import Qt
 
 
 def _qt_enum(group_name, value_name):
     """Resolve Qt enum across PyQt5 / PyQt6 namespace differences."""
-    from qgis.PyQt.QtCore import Qt as _Qt
+    # from qgis.PyQt.QtCore import Qt as _Qt
     group = getattr(_Qt, group_name, None)
     if group is not None and hasattr(group, value_name):
         return getattr(group, value_name)

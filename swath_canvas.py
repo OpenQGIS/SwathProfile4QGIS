@@ -3,7 +3,6 @@
 Interactive matplotlib canvas for swath profile visualization.
 """
 
-import numpy as np
 import logging
 from qgis.PyQt.QtCore import Qt, QTimer
 
