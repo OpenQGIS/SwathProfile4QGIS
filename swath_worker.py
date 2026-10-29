@@ -187,7 +187,7 @@ class SwathWorker(QObject):
                     try:
                         val = feat[field_name]
                         field_values[i].append(str(val) if val is not None else "")
-                    except:
+                    except Exception:
                         field_values[i].append("")
 
                 try:

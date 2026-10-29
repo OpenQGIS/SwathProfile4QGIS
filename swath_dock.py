@@ -722,11 +722,9 @@ class SwathDock(QDockWidget):
             return
         
         from qgis.core import Qgis
-        from qgis.PyQt.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton
-        from qgis.PyQt.QtCore import Qt
-        import os
         import subprocess
         import sys
+        import shutil
 
         iface = self.plugin.iface
         message_bar = iface.messageBar()
@@ -758,9 +756,6 @@ class SwathDock(QDockWidget):
             
             # Cross-platform select file in explorer
             def open_folder():
-                import sys
-                import shutil
-                import subprocess
                 try:
                     abs_path = os.path.abspath(path)
                     if not os.path.exists(abs_path):
