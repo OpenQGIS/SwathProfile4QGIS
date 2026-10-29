@@ -3,7 +3,7 @@ name=SwathProfile4QGIS
 qgisMinimumVersion=3.16
 qgisMaximumVersion=4.99
 description=横截面剖面提取工具 / Swath profile extraction tool
-version=2.1.2
+version=2.1.3
 author=OpenQGIS
 email=OpenQGIS@outlook.com
 about=从栅格数据沿基线提取横截面剖面，支持交互式图表面板、一键曲线平滑、动态自定义纵坐标、参数覆盖与数据导出。 / Extract swath profiles from raster along baselines with interactive chart, curve smoothing, custom Y-axis, parameter override and export.
@@ -16,6 +16,8 @@ icon=icons/icon.png
 experimental=False
 deprecated=False
 changelog=
+    Version 2.1.3
+    - 🐛 修复bug提升性能 / Bug fixes and performance improvements
     Version 2.1.2
     - 🐛 修复bug提升性能 / Bug fixes and performance improvements
     Version 2.1.0

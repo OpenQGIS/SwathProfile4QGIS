@@ -96,7 +96,7 @@ class DXFBuilder:
         self.entities.append(f"0\nPOLYLINE\n8\n{layer}")
         if color is not None:
             self.entities.append(f"62\n{color}")
-        self.entities.append(f"66\n1\n70\n8") # 8 = 3D Polyline
+        self.entities.append("66\n1\n70\n8") # 8 = 3D Polyline
         for pt in points:
             x, y = pt[0], pt[1]
             z = pt[2] if len(pt) > 2 else 0.0
@@ -1279,11 +1279,16 @@ class SwathDock(QDockWidget):
                         pr.addFeature(feat)
 
             # 1. Export 5 characteristic lines (Level = 1)
-            if sp.mean_profile is not None: add_feature_data(xy_base, sp.mean_profile, "Mean", 1)
-            if sp.min_profile is not None: add_feature_data(xy_base, sp.min_profile, "Min", 1)
-            if sp.max_profile is not None: add_feature_data(xy_base, sp.max_profile, "Max", 1)
-            if sp.q1_profile is not None: add_feature_data(xy_base, sp.q1_profile, "Q1", 1)
-            if sp.q3_profile is not None: add_feature_data(xy_base, sp.q3_profile, "Q3", 1)
+            if sp.mean_profile is not None:
+                add_feature_data(xy_base, sp.mean_profile, "Mean", 1)
+            if sp.min_profile is not None:
+                add_feature_data(xy_base, sp.min_profile, "Min", 1)
+            if sp.max_profile is not None:
+                add_feature_data(xy_base, sp.max_profile, "Max", 1)
+            if sp.q1_profile is not None:
+                add_feature_data(xy_base, sp.q1_profile, "Q1", 1)
+            if sp.q3_profile is not None:
+                add_feature_data(xy_base, sp.q3_profile, "Q3", 1)
 
             # 2. Export individual offset lines (Level = 0)
             if self._mode == "offset" and sp.n_profiles > 1:

@@ -24,8 +24,6 @@ from qgis.core import (
     Qgis,
     QgsGeometry,
     QgsPointXY,
-    QgsCoordinateTransform,
-    QgsProject,
     QgsFeature,
     QgsField,
     QgsVectorLayer,

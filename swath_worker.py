@@ -7,7 +7,7 @@ from qgis.core import (
     QgsExpressionContext, QgsExpressionContextUtils, QgsProject,
     QgsProperty, QgsExpressionContextScope, QgsExpression
 )
-from qgis.PyQt.QtCore import QObject, pyqtSignal, QThread
+from qgis.PyQt.QtCore import QObject, pyqtSignal
 
 from .i18n import tr
 
@@ -147,7 +147,6 @@ class SwathWorker(QObject):
             results = []
             baseline_geoms = []
             strip_widths = []
-            total = len(self._baselines)
 
             # Collect field names from first feature
             fields = []

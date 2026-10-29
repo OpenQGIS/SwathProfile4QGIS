@@ -4,7 +4,7 @@ Interactive matplotlib canvas for swath profile visualization.
 """
 
 import logging
-from qgis.PyQt.QtCore import Qt, QTimer
+from qgis.PyQt.QtCore import QTimer
 
 logger = logging.getLogger("SwathProfile4QGIS")
 from qgis.PyQt.QtGui import QColor

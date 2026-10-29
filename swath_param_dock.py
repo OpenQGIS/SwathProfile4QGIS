@@ -11,7 +11,7 @@ from qgis.gui import QgsMapLayerComboBox, QgsPropertyOverrideButton
 from qgis.PyQt.QtWidgets import (
     QDockWidget, QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
     QLabel, QPushButton, QCheckBox,
-    QRadioButton, QButtonGroup, QGroupBox, QSpinBox,
+    QSpinBox,
     QDoubleSpinBox, QProgressBar, QMessageBox,
     QScrollArea, QSizePolicy, QLineEdit, QFileDialog,
 )
@@ -645,10 +645,6 @@ class SwathParamDock(QDockWidget):
 
     def _show_swath_bands(self, baseline_geoms):
         """Display swath band polygons on the map canvas."""
-        from qgis.gui import QgsRubberBand
-        from qgis.core import Qgis, QgsPointXY
-        from qgis.PyQt.QtGui import QColor
-
         # Remove old bands
         self._clear_swath_bands()
 
@@ -659,7 +655,7 @@ class SwathParamDock(QDockWidget):
     def _show_selected_band(self, idx=0):
         """Show the swath band for the selected baseline."""
         from qgis.gui import QgsRubberBand
-        from qgis.core import Qgis, QgsPointXY
+        from qgis.core import Qgis
         from qgis.PyQt.QtGui import QColor
 
         self._clear_swath_bands()
@@ -725,7 +721,7 @@ class SwathParamDock(QDockWidget):
 
     def _export_swath_bands(self, baseline_geoms):
         """Export swath band polygons to file or load as a temporary layer."""
-        from qgis.core import (Qgis, QgsVectorFileWriter, QgsVectorLayer, QgsField)
+        from qgis.core import (QgsVectorFileWriter, QgsVectorLayer, QgsField)
         from qgis.PyQt.QtCore import QVariant
 
         try:
@@ -872,7 +868,7 @@ class SwathParamDock(QDockWidget):
 
     def _create_flat_band(self, line_geom, half_width):
         """Create a flat-ended band polygon from a line geometry."""
-        from qgis.core import Qgis, QgsPointXY
+        from qgis.core import Qgis
 
         # Get offset lines on both sides
         offset_plus = line_geom.offsetCurve(half_width, 8, Qgis.JoinStyle.Round, 10.0)

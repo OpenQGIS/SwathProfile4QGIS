@@ -6,10 +6,9 @@ Export dialog for SwathProfile GIS data.
 from qgis.PyQt.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, 
                                  QLineEdit, QCheckBox, QDialogButtonBox, QWidget,
                                  QHBoxLayout, QToolButton, QFileDialog, QRadioButton,
-                                 QGroupBox, QLabel)
-from qgis.PyQt.QtCore import Qt, QSettings
+                                 QGroupBox)
+from qgis.PyQt.QtCore import QSettings
 from qgis.gui import QgsProjectionSelectionWidget
-from qgis.core import QgsCoordinateReferenceSystem
 
 from .i18n import tr
 

@@ -5,9 +5,8 @@ Settings dialog for swath profile display options.
 
 from qgis.PyQt.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QFormLayout,
-    QLabel, QPushButton, QColorDialog, QDoubleSpinBox,
-    QGroupBox, QTabWidget, QWidget, QSizePolicy,
-    QSpinBox, QCheckBox, QLineEdit,
+    QPushButton, QColorDialog, QDoubleSpinBox,
+    QGroupBox, QTabWidget, QWidget,
 )
 from qgis.PyQt.QtGui import QColor
 from qgis.PyQt.QtCore import Qt, pyqtSignal

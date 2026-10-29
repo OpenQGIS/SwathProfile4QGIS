@@ -11,7 +11,6 @@ Design principles
 * Tight typography, minimal padding.
 """
 
-import numpy as np
 import logging
 
 logger = logging.getLogger("SwathProfile4QGIS")
@@ -129,7 +128,7 @@ def draw_swath_profile(ax, sp, show_profiles=True,
     if show_relief and sp.relief_profile is not None:
         ax_relief = ax.twinx()
         ax_relief.plot(d, sp.relief_profile, color=clr_relief,
-                       linewidth=LINE_W_RELIEF, label="Relief", zorder=2)
+                       linewidth=w_relief, label="Relief", zorder=2)
         ax_relief.set_ylabel("Local relief", fontsize=9, labelpad=4,
                              color=CLR_RELIEF)
         ax_relief.tick_params(axis="y", labelsize=8, colors=CLR_RELIEF,
